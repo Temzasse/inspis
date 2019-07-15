@@ -1,1 +1,1 @@
-# Inspiry
+# Inspis
