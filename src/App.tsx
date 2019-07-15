@@ -6,6 +6,7 @@ import NoteList from './components/notes/NoteList';
 import { useModel } from './smook';
 // import testData from './testData.json';
 // import * as storage from './utils/storage';
+import LatestNote from './components/notes/LatestNote';
 
 function App() {
   const notesModel = useModel('notes');
@@ -29,11 +30,8 @@ function App() {
         <Main>
           {latestNote && (
             <>
-              <h1>Latest inspiry</h1>
-
-              <NotesSection>
-                <NoteList notes={[latestNote]} />
-              </NotesSection>
+              <h1>Latest</h1>
+              <LatestNote note={latestNote} />
             </>
           )}
 
