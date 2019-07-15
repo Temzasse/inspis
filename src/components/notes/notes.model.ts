@@ -2,7 +2,15 @@ import { Model, effect, FetchableValue, fetchable, Action } from '../../smook';
 import * as storage from '../../utils/storage';
 import { guid, byDateSort } from '../../utils/common';
 import { RootState } from '../../store';
-import { NotesById, Note, NoteBase, NotesByCategory } from './notes.types';
+import { getNoteColors } from '../../utils/color';
+
+import {
+  NotesById,
+  Note,
+  NoteBase,
+  NotesByCategory,
+  NoteKind,
+} from './notes.types';
 
 export interface State {
   notesById: FetchableValue<NotesById>;
@@ -69,10 +77,14 @@ const notesModel = {
     }),
 
     saveNote: effect(async (models, _, payload: NoteBase) => {
+      console.log('> payload', payload);
+      const kind = NoteKind.Other;
       const note: Note = {
         ...payload,
+        kind,
         id: guid(),
         createdAt: new Date().toISOString(),
+        colors: getNoteColors(kind),
       };
 
       console.log('> Save note', note);

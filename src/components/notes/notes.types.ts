@@ -7,7 +7,6 @@ export enum NoteKind {
 export interface NoteBase {
   title: string;
   url: string;
-  kind: NoteKind;
   category: string;
   tags: string[];
 }
@@ -15,6 +14,8 @@ export interface NoteBase {
 export interface Note extends NoteBase {
   id: string;
   createdAt: string;
+  colors: [string, string];
+  kind: NoteKind;
 }
 
 export interface NotesById {

@@ -16,19 +16,25 @@ const randomColor = () => {
   return hex;
 };
 
+export const getNoteColors = (kind: NoteKind): [string, string] => {
+  const rot = 110 * (Math.random() > 0.5 ? 1 : -1);
+  const c1 = colorsByNoteKind[kind] || randomColor();
+  const c2 = color(c1)
+    .rotate(rot)
+    .darken(0.1)
+    .string();
+
+  return [c1, c2];
+};
+
 const gradientCache: { [id: string]: string } = {};
 
-export const generateGradient = (note: Note) => {
+export const getNoteBG = (note: Note) => {
   if (gradientCache[note.id]) return gradientCache[note.id];
 
-  const rot = 110 * (Math.random() > 0.5 ? 1 : -1);
-  const hex = colorsByNoteKind[note.kind] || randomColor();
-  const hex2 = color(hex)
-    .rotate(rot)
-    .darken(0.1);
+  const [c1, c2] = note.colors;
+  const gradient = `linear-gradient(140deg, ${c2} 0%, ${c1}) 100%`;
 
-  const gradient = `linear-gradient(180deg, ${hex2} 0%, ${hex}) 100%`;
   gradientCache[note.id] = gradient;
-
   return gradient;
 };

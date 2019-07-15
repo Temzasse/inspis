@@ -4,9 +4,13 @@ import styled from 'styled-components';
 import { DIMENSIONS } from './constants';
 import NoteList from './components/notes/NoteList';
 import { useModel } from './smook';
-// import testData from './testData.json';
-// import * as storage from './utils/storage';
 import LatestNote from './components/notes/LatestNote';
+
+/* **************** For testing ****************
+import * as storage from './utils/storage';
+import testData from './testData.json';
+import { sleep } from './utils/common';
+************************************************ */
 
 function App() {
   const notesModel = useModel('notes');
@@ -19,8 +23,17 @@ function App() {
 
   React.useEffect(() => {
     loadNotes();
-    // storage.clear();
-    // storage.saveNotes(testData as any);
+
+    /* **************** For testing ****************
+    storage.clear();
+    async function saveTestNotes() {
+      for (const note of testData) {
+        notesModel.actions.saveNote(note);
+        await sleep();
+      }
+    }
+    saveTestNotes();
+    ************************************************ */
   }, []); // eslint-disable-line
 
   return (

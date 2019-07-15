@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { DIMENSIONS } from '../../constants';
 import { Note } from './notes.types';
-import { generateGradient } from '../../utils/color';
+import { getNoteBG } from '../../utils/color';
 
 interface Props {
   note: Note;
 }
 
 function NoteItem({ note }: Props) {
-  const bg = generateGradient(note);
+  const bg = getNoteBG(note);
   return (
     <Wrapper bg={bg}>
       <NoteTitle>{note.title}</NoteTitle>
