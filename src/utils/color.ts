@@ -1,12 +1,6 @@
 import color from 'color';
-import { NoteKind, Note } from '../components/notes/notes.types';
+import { Note } from '../components/notes/notes.types';
 import { randomNumBetween } from './common';
-
-const colorsByNoteKind = {
-  [NoteKind.Medium]: '#00ab6c',
-  [NoteKind.Twitter]: '#1da1f2',
-  [NoteKind.Other]: undefined,
-};
 
 const randomColor = () => {
   let hue = randomNumBetween(0, 360);
@@ -16,9 +10,9 @@ const randomColor = () => {
   return hex;
 };
 
-export const getNoteColors = (kind: NoteKind): [string, string] => {
+export const getNoteColors = (): [string, string] => {
   const rot = 110 * (Math.random() > 0.5 ? 1 : -1);
-  const c1 = colorsByNoteKind[kind] || randomColor();
+  const c1 = randomColor();
   const c2 = color(c1)
     .rotate(rot)
     .darken(0.1)

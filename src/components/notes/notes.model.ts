@@ -3,14 +3,7 @@ import * as storage from '../../utils/storage';
 import { guid, byDateSort } from '../../utils/common';
 import { RootState } from '../../store';
 import { getNoteColors } from '../../utils/color';
-
-import {
-  NotesById,
-  Note,
-  NoteBase,
-  NotesByCategory,
-  NoteKind,
-} from './notes.types';
+import { NotesById, Note, NoteBase, NotesByCategory } from './notes.types';
 
 export interface State {
   notesById: FetchableValue<NotesById>;
@@ -24,7 +17,6 @@ const notesModel = {
   },
 
   selectors: {
-    // TODO: fix selector typings
     getNotesByCategory: ({ notes }: RootState) => {
       const notesByCategory: NotesByCategory = Object.values(
         notes.notesById.data
@@ -43,7 +35,7 @@ const notesModel = {
       return notesByCategory;
     },
 
-    getLatesNote: ({ notes }: RootState) => {
+    getLatestNote: ({ notes }: RootState) => {
       const notesArr = Object.values(notes.notesById.data);
       if (notesArr.length === 0) return null;
 
@@ -66,25 +58,20 @@ const notesModel = {
     loadNotes: effect(async models => {
       const notes = await storage.loadNotes();
 
-      if (notes.length > 0) {
-        const notesById: NotesById = notes.reduce((acc: any, note) => {
-          acc[note.id] = note;
-          return acc;
-        }, {});
+      const notesById: NotesById = notes.reduce((acc: any, note) => {
+        acc[note.id] = note;
+        return acc;
+      }, {});
 
-        models.notes.actions.setNotes(fetchable.success(notesById));
-      }
+      models.notes.actions.setNotes(fetchable.success(notesById));
     }),
 
     saveNote: effect(async (models, _, payload: NoteBase) => {
-      console.log('> payload', payload);
-      const kind = NoteKind.Other;
       const note: Note = {
         ...payload,
-        kind,
         id: guid(),
         createdAt: new Date().toISOString(),
-        colors: getNoteColors(kind),
+        colors: getNoteColors(),
       };
 
       console.log('> Save note', note);

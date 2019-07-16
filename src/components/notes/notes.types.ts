@@ -1,6 +1,7 @@
 export enum NoteKind {
   Medium = 'Medium',
   Twitter = 'Twitter',
+  Youtube = 'Youtube',
   Other = 'Other',
 }
 
@@ -15,7 +16,6 @@ export interface Note extends NoteBase {
   id: string;
   createdAt: string;
   colors: [string, string];
-  kind: NoteKind;
 }
 
 export interface NotesById {

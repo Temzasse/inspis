@@ -5,36 +5,44 @@ import { DIMENSIONS } from './constants';
 import NoteList from './components/notes/NoteList';
 import { useModel } from './smook';
 import LatestNote from './components/notes/LatestNote';
+import { Spacing } from './components/common';
 
-/* **************** For testing ****************
+// **************** For testing ****************
 import * as storage from './utils/storage';
 import testData from './testData.json';
 import { sleep } from './utils/common';
-************************************************ */
+// *********************************************
 
 function App() {
   const notesModel = useModel('notes');
   const { loadNotes } = notesModel.actions;
 
-  const latestNote = notesModel.select(notesModel.selectors.getLatesNote);
+  const allNotes = notesModel.select('notesById');
+  const latestNote = notesModel.select(notesModel.selectors.getLatestNote);
   const notesByCategory = notesModel.select(
     notesModel.selectors.getNotesByCategory
   );
 
   React.useEffect(() => {
     loadNotes();
-
-    /* **************** For testing ****************
-    storage.clear();
-    async function saveTestNotes() {
-      for (const note of testData) {
-        notesModel.actions.saveNote(note);
-        await sleep();
-      }
-    }
-    saveTestNotes();
-    ************************************************ */
   }, []); // eslint-disable-line
+
+  React.useEffect(() => {
+    console.log('> allNotes', allNotes);
+    if (
+      allNotes.status === 'SUCCESS' &&
+      Object.values(allNotes.data).length === 0
+    ) {
+      async function saveTestNotes() {
+        await storage.clear();
+        for (const note of testData) {
+          notesModel.actions.saveNote(note);
+          await sleep();
+        }
+      }
+      saveTestNotes();
+    }
+  }, [allNotes, notesModel.actions]);
 
   return (
     <AppWrapper>
@@ -48,12 +56,15 @@ function App() {
             </>
           )}
 
+          <Spacing dir="y" amount={40} />
+
           {Object.entries(notesByCategory).map(([category, notes]) => (
             <div key={category}>
               <h2>{category}</h2>
               <NotesSection>
                 <NoteList notes={notes} />
               </NotesSection>
+              <Spacing dir="y" amount={32} />
             </div>
           ))}
         </Main>
@@ -83,7 +94,7 @@ const Main = styled.main`
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 16px;
+  padding: 32px 16px;
 `;
 
 const Nav = styled.nav`
@@ -95,7 +106,6 @@ const Nav = styled.nav`
 const NotesSection = styled.section`
   margin-right: -16px;
   margin-left: -16px;
-  margin-bottom: 32px;
 `;
 
 export default App;

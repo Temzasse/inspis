@@ -23,3 +23,8 @@ export const range = (num: number) => [...Array(num).keys()];
 
 export const randomNumBetween = (min: number, max: number) =>
   Math.floor(Math.random() * max) + min;
+
+export const truncate = (str: string, len: number) => {
+  if (str.length > len) return `${str.substring(0, len - 3)}...`;
+  return str;
+};
