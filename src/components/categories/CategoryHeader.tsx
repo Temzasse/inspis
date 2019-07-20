@@ -19,7 +19,9 @@ function CategoryHeader({ category }: Props) {
   const saveNote = React.useCallback(
     (note: NoteBase) => {
       notesModel.actions.saveNote(note);
-      if (closeSheetRef.current) closeSheetRef.current();
+      setTimeout(() => {
+        if (closeSheetRef.current) closeSheetRef.current();
+      }, 500);
     },
     [notesModel.actions]
   );

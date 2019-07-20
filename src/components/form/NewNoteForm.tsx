@@ -169,8 +169,7 @@ const ClearNewCategory = styled(motion.button)`
   font-size: 12px;
 `;
 
-const ErrorMessage = styled.p`
-  margin: 0;
+const ErrorMessage = styled.div`
   color: #e40404;
   font-weight: 500;
   display: flex;
