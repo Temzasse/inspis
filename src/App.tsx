@@ -5,12 +5,13 @@ import { DIMENSIONS } from './constants';
 import NoteList from './components/notes/NoteList';
 import { useModel } from './smook';
 import LatestNote from './components/notes/LatestNote';
-import { Spacing } from './components/common';
+import { Spacing, Heading } from './components/common';
 
 // **************** For testing ****************
 import * as storage from './utils/storage';
 import testData from './testData.json';
 import { sleep } from './utils/common';
+import CategoryHeader from './components/categories/CategoryHeader';
 // *********************************************
 
 function App() {
@@ -51,7 +52,8 @@ function App() {
         <Main>
           {latestNote && (
             <>
-              <h1>Latest</h1>
+              <Heading>Latest</Heading>
+              <Spacing dir="y" amount={32} />
               <LatestNote note={latestNote} />
             </>
           )}
@@ -60,7 +62,8 @@ function App() {
 
           {Object.entries(notesByCategory).map(([category, notes]) => (
             <div key={category}>
-              <h2>{category}</h2>
+              <CategoryHeader category={category} />
+              <Spacing dir="y" amount={24} />
               <NotesSection>
                 <NoteList notes={notes} />
               </NotesSection>
