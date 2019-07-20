@@ -5,6 +5,7 @@ import { useModel } from '../../smook';
 import { IconButton, Heading } from '../common';
 import { useBottomSheet } from '../common/BottomSheet';
 import NewNoteForm from '../form/NewNoteForm';
+import { NoteBase } from '../notes/notes.types';
 
 interface Props {
   category: string;
@@ -13,10 +14,23 @@ interface Props {
 function CategoryHeader({ category }: Props) {
   const notesModel = useModel('notes');
   const allCategories = notesModel.select(notesModel.selectors.getCategories);
+  const closeSheetRef = React.useRef<() => any>();
 
-  const { openBottomSheet } = useBottomSheet(
-    <NewNoteForm categories={allCategories} />
+  const saveNote = React.useCallback(
+    (note: NoteBase) => {
+      notesModel.actions.saveNote(note);
+      if (closeSheetRef.current) closeSheetRef.current();
+    },
+    [notesModel.actions]
   );
+
+  const { openBottomSheet, closeBottomSheet } = useBottomSheet(
+    <NewNoteForm categories={allCategories} saveNote={saveNote} />
+  );
+
+  React.useEffect(() => {
+    closeSheetRef.current = closeBottomSheet;
+  });
 
   return (
     <Wrapper>

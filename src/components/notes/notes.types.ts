@@ -2,6 +2,8 @@ export enum NoteKind {
   Medium = 'Medium',
   Twitter = 'Twitter',
   Youtube = 'Youtube',
+  Github = 'Github',
+  Reddit = 'Reddit',
   Other = 'Other',
 }
 

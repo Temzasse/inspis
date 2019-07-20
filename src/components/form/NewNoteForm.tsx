@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaPlus } from 'react-icons/fa';
-import { FiArrowLeft } from 'react-icons/fi';
+import { FiArrowLeft, FiAlertTriangle } from 'react-icons/fi';
 
 import { TextInput, Spacing, Heading, MotionButton } from '../common';
 import { NoteBase } from '../notes/notes.types';
@@ -10,6 +10,7 @@ import { isValidUrl } from '../../utils/common';
 
 interface Props {
   categories: string[];
+  saveNote: (note: NoteBase) => any;
 }
 
 const parseTags = (tags: string) =>
@@ -18,12 +19,13 @@ const parseTags = (tags: string) =>
     .filter(Boolean)
     .map(t => t.trim());
 
-function NewNoteForm({ categories }: Props) {
+function NewNoteForm({ categories, saveNote }: Props) {
   const [url, setUrl] = React.useState('');
   const [title, setTitle] = React.useState('');
   const [category, setCategory] = React.useState('');
   const [tagsStr, setTagsStr] = React.useState('');
   const [newCategory, setNewCategory] = React.useState<null | string>(null);
+  const [error, setError] = React.useState<null | string>(null);
 
   function validateNote(note: NoteBase) {
     if (!note.title) return false;
@@ -33,7 +35,7 @@ function NewNoteForm({ categories }: Props) {
     return true;
   }
 
-  function saveNote() {
+  function _saveNote() {
     const tags = parseTags(tagsStr);
     const cat = newCategory || category;
     const note: NoteBase = { url, title, category: cat, tags };
@@ -41,8 +43,16 @@ function NewNoteForm({ categories }: Props) {
 
     if (noteValid) {
       console.log('> Save note', note);
+      saveNote(note);
+    } else {
+      setError('Check the inputs!');
     }
   }
+
+  // Clear error when inputs change
+  React.useEffect(() => {
+    setError(null);
+  }, [url, title, category, newCategory, tagsStr]);
 
   return (
     <Wrapper>
@@ -67,7 +77,7 @@ function NewNoteForm({ categories }: Props) {
         </>
       ) : (
         <Categories>
-          {[...categories, 'Something awesome', 'Interior design'].map(c => (
+          {categories.map(c => (
             <CategoryButton
               key={c}
               selected={category === c}
@@ -104,7 +114,18 @@ function NewNoteForm({ categories }: Props) {
       />
 
       <Spacing dir="y" amount={24} />
-      <MotionButton onClick={saveNote}>Save</MotionButton>
+
+      <MotionButton onTap={_saveNote}>Save</MotionButton>
+
+      <Spacing dir="y" amount={16} />
+
+      {error && (
+        <ErrorMessage>
+          <FiAlertTriangle size={16} />
+          <Spacing amount={6} />
+          {error}
+        </ErrorMessage>
+      )}
     </Wrapper>
   );
 }
@@ -146,6 +167,16 @@ const ClearNewCategory = styled(motion.button)`
   background: none;
   padding: 0;
   font-size: 12px;
+`;
+
+const ErrorMessage = styled.p`
+  margin: 0;
+  color: #e40404;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default NewNoteForm;
