@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+
+import { useModel } from '../../smook';
 import { IconButton, Heading } from '../common';
 import { useBottomSheet } from '../common/BottomSheet';
 import NewNoteForm from '../form/NewNoteForm';
@@ -9,7 +11,13 @@ interface Props {
 }
 
 function CategoryHeader({ category }: Props) {
-  const { openBottomSheet } = useBottomSheet(<NewNoteForm />);
+  const notesModel = useModel('notes');
+  const allCategories = notesModel.select(notesModel.selectors.getCategories);
+
+  const { openBottomSheet } = useBottomSheet(
+    <NewNoteForm categories={allCategories} />
+  );
+
   return (
     <Wrapper>
       <Heading variant="h2">{category}</Heading>

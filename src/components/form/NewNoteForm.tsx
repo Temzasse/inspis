@@ -1,22 +1,110 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TextInput, Spacing, Heading } from '../common';
+import { motion } from 'framer-motion';
+import { FaPlus } from 'react-icons/fa';
+import { FiArrowLeft } from 'react-icons/fi';
+
+import { TextInput, Spacing, Heading, MotionButton } from '../common';
+import { NoteBase } from '../notes/notes.types';
+import { isValidUrl } from '../../utils/common';
 
 interface Props {
-  foo?: any;
+  categories: string[];
 }
 
-function NewNoteForm({ foo }: Props) {
+const parseTags = (tags: string) =>
+  tags
+    .split(',')
+    .filter(Boolean)
+    .map(t => t.trim());
+
+function NewNoteForm({ categories }: Props) {
   const [url, setUrl] = React.useState('');
   const [title, setTitle] = React.useState('');
+  const [category, setCategory] = React.useState('');
+  const [tagsStr, setTagsStr] = React.useState('');
+  const [newCategory, setNewCategory] = React.useState<null | string>(null);
+
+  function validateNote(note: NoteBase) {
+    if (!note.title) return false;
+    if (!isValidUrl(note.url)) return false;
+    if (!note.category) return false;
+    if (note.tags.length > 3) return false;
+    return true;
+  }
+
+  function saveNote() {
+    const tags = parseTags(tagsStr);
+    const cat = newCategory || category;
+    const note: NoteBase = { url, title, category: cat, tags };
+    const noteValid = validateNote(note);
+
+    if (noteValid) {
+      console.log('> Save note', note);
+    }
+  }
 
   return (
     <Wrapper>
       <Heading variant="h2">New note</Heading>
-      <Spacing dir="y" amount={32} />
-      <TextInput value={url} onTextChange={setUrl} label="URL" />
+
       <Spacing dir="y" amount={24} />
-      <TextInput value={title} onTextChange={setTitle} label="Title" />
+
+      {newCategory !== null ? (
+        <>
+          <TextInput
+            value={newCategory}
+            onTextChange={setNewCategory}
+            label="Category"
+            required
+          />
+          <Spacing dir="y" amount={8} />
+          <ClearNewCategory onTap={() => setNewCategory(null)}>
+            <FiArrowLeft />
+            <Spacing dir="x" amount={4} />
+            Select existing category
+          </ClearNewCategory>
+        </>
+      ) : (
+        <Categories>
+          {[...categories, 'Something awesome', 'Interior design'].map(c => (
+            <CategoryButton
+              key={c}
+              selected={category === c}
+              onTap={() => setCategory(c)}
+            >
+              {c}
+            </CategoryButton>
+          ))}
+
+          <CategoryButton onTap={() => setNewCategory('')}>
+            <FaPlus size={10} color="#222" />
+            <Spacing dir="x" amount={4} />
+            NEW
+          </CategoryButton>
+        </Categories>
+      )}
+
+      <Spacing dir="y" amount={24} />
+
+      <TextInput value={url} onTextChange={setUrl} label="URL" required />
+
+      <Spacing dir="y" amount={24} />
+
+      <TextInput value={title} onTextChange={setTitle} label="Title" required />
+
+      <Spacing dir="y" amount={24} />
+
+      <TextInput
+        value={tagsStr}
+        onTextChange={setTagsStr}
+        label="Tags"
+        labelInfo="comma separated (max 3)"
+        placeholder="Eg. react, hooks, material"
+      />
+
+      <Spacing dir="y" amount={24} />
+      <MotionButton onClick={saveNote}>Save</MotionButton>
     </Wrapper>
   );
 }
@@ -25,6 +113,39 @@ const Wrapper = styled.div`
   padding: 16px;
   display: flex;
   flex-direction: column;
+`;
+
+const Categories = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+const CategoryButton = styled(motion.button)<{ selected?: boolean }>`
+  outline: none;
+  background-color: #fff;
+  border: 1px solid ${props => (props.selected ? '#222' : '#ddd')};
+  border-radius: 99px;
+  height: 24px;
+  padding: 0px 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: #222;
+`;
+
+const ClearNewCategory = styled(motion.button)`
+  display: flex;
+  align-items: center;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0;
+  font-size: 12px;
 `;
 
 export default NewNoteForm;

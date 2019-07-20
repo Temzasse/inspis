@@ -42,6 +42,17 @@ const notesModel = {
       notesArr.sort(byDateSort);
       return notesArr[0];
     },
+
+    getCategories: ({ notes }: RootState) => {
+      return Object.keys(
+        Object.values(notes.notesById.data).reduce((acc: any, note) => {
+          if (!acc[note.category]) {
+            acc[note.category] = true;
+          }
+          return acc;
+        }, {})
+      );
+    },
   },
 
   actions: {

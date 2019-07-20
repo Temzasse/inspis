@@ -1,16 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaPlus } from 'react-icons/fa';
+import { FiArrowLeft } from 'react-icons/fi';
 import { noop } from '../../utils/common';
 
 interface Props {
-  icon: 'plus';
+  icon: 'plus' | 'arrow-left';
   color?: string;
   onClick?: () => any;
 }
 
 const iconMapper = {
   plus: FaPlus,
+  'arrow-left': FiArrowLeft
 };
 
 function IconButton({ icon, color = '#222', onClick = noop }: Props) {

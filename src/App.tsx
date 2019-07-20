@@ -6,19 +6,12 @@ import NoteList from './components/notes/NoteList';
 import { useModel } from './smook';
 import LatestNote from './components/notes/LatestNote';
 import { Spacing, Heading } from './components/common';
-
-// **************** For testing ****************
-import * as storage from './utils/storage';
-import testData from './testData.json';
-import { sleep } from './utils/common';
 import CategoryHeader from './components/categories/CategoryHeader';
-// *********************************************
+import { useTestData } from './utils/hooks';
 
 function App() {
   const notesModel = useModel('notes');
   const { loadNotes } = notesModel.actions;
-
-  const allNotes = notesModel.select('notesById');
   const latestNote = notesModel.select(notesModel.selectors.getLatestNote);
   const notesByCategory = notesModel.select(
     notesModel.selectors.getNotesByCategory
@@ -28,22 +21,7 @@ function App() {
     loadNotes();
   }, []); // eslint-disable-line
 
-  React.useEffect(() => {
-    console.log('> allNotes', allNotes);
-    if (
-      allNotes.status === 'SUCCESS' &&
-      Object.values(allNotes.data).length === 0
-    ) {
-      async function saveTestNotes() {
-        await storage.clear();
-        for (const note of testData) {
-          notesModel.actions.saveNote(note);
-          await sleep();
-        }
-      }
-      saveTestNotes();
-    }
-  }, [allNotes, notesModel.actions]);
+  useTestData();
 
   return (
     <AppWrapper>

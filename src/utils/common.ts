@@ -30,3 +30,12 @@ export const truncate = (str: string, len: number) => {
 };
 
 export const noop = (...arg: any[]) => {};
+
+export const isValidUrl = (url: string) => {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
