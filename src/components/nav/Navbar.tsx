@@ -84,7 +84,7 @@ const Wrapper = styled.nav`
   left: 0;
   height: 50px;
   width: 100%;
-  padding: 0px 12px;
+  padding: 0px 10px;
   border-bottom: 1px solid #eee;
   background-color: #fff;
   display: flex;

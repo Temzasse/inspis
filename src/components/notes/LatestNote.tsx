@@ -5,6 +5,8 @@ import { Note } from './notes.types';
 import { getNoteBG } from '../../utils/color';
 import NoteKindIcon from './NoteKindIcon';
 import NoteTitle from './NoteTitle';
+import NoteTags from './NoteTags';
+import { Spacing } from '../common';
 
 interface Props {
   note: Note;
@@ -12,10 +14,17 @@ interface Props {
 
 function LatestNote({ note }: Props) {
   const bg = getNoteBG(note);
+
   return (
     <Wrapper bg={bg} href={note.url} target="_blank" rel="noopener noreferrer">
       <NoteTitle note={note} size="lg" />
+
+      <Spacing dir="y" amount={12} />
+
+      {note.tags.length > 0 && <NoteTags tags={note.tags} size="lg" />}
+
       <div style={{ flex: 1 }} />
+
       <NoteFooter>
         <NoteKindIcon note={note} size="lg" />
       </NoteFooter>

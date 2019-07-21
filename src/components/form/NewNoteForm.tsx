@@ -31,10 +31,11 @@ function NewNoteForm({ categories, initialCategory = '', saveNote }: Props) {
   );
 
   function validateNote(note: NoteBase) {
-    if (!note.title) return false;
+    if (!note.title || title.length > 40) return false;
     if (!isValidUrl(note.url)) return false;
     if (!note.category) return false;
     if (note.tags.length > 3) return false;
+    if (note.tags.filter(t => t.length > 20).length > 0) return false;
     return true;
   }
 
@@ -108,7 +109,13 @@ function NewNoteForm({ categories, initialCategory = '', saveNote }: Props) {
 
       <Spacing dir="y" amount={24} />
 
-      <TextInput value={title} onTextChange={setTitle} label="Title" required />
+      <TextInput
+        value={title}
+        onTextChange={setTitle}
+        label="Title"
+        required
+        labelInfo="max 40 characters"
+      />
 
       <Spacing dir="y" amount={24} />
 
@@ -116,7 +123,7 @@ function NewNoteForm({ categories, initialCategory = '', saveNote }: Props) {
         value={tagsStr}
         onTextChange={setTagsStr}
         label="Tags"
-        labelInfo="comma separated (max 3)"
+        labelInfo="comma separated (max 3 x 20 char)"
         placeholder="Eg. react, hooks, material"
       />
 

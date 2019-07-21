@@ -12,9 +12,6 @@ interface Props {
   size?: Size;
 }
 
-const sizeMapper = { sm: 18, lg: 28 };
-const weightMapper = { sm: 600, lg: 500 };
-
 function NoteTitle({ note, size = 'sm' }: Props) {
   const shadowColor = color(note.colors[1])
     .darken(0.6)
@@ -27,11 +24,16 @@ function NoteTitle({ note, size = 'sm' }: Props) {
   );
 }
 
+type P = { size: Size };
+const fontSize = (p: P) => ({ sm: 18, lg: 32 }[p.size]);
+const fontWeight = (p: P) => ({ sm: 600, lg: 500 }[p.size]);
+const lineHeight = (p: P) => ({ sm: 1.4, lg: 1.2 }[p.size]);
+
 const Wrapper = styled('span')<{ size: Size; shadowColor: string }>`
-  font-size: ${props => sizeMapper[props.size]}px;
-  font-weight: ${props => weightMapper[props.size]};
+  font-size: ${fontSize}px;
+  font-weight: ${fontWeight};
+  line-height: ${lineHeight};
   color: #fff;
-  line-height: 1.4;
   text-shadow: 2px 0px 24px ${props => props.shadowColor};
   margin-right: 8px;
 `;

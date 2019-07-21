@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// import { useTestData } from './utils/hooks';
+import { useTestData } from './utils/hooks';
 import { useModel } from './smook';
 import { EmptyState } from './components/common';
 import Navbar from './components/nav/Navbar';
@@ -16,7 +16,7 @@ function App() {
   const hasNotes =
     notes.status === 'SUCCESS' && Object.keys(notes.data).length > 0;
 
-  // useTestData();
+  useTestData();
 
   React.useEffect(() => {
     notesModel.actions.loadNotes();

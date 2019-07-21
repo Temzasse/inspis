@@ -19,21 +19,21 @@ function Notes() {
       {latestNote && (
         <>
           <Heading>Latest</Heading>
-          <Spacing dir="y" amount={32} />
+          <Spacing dir="y" />
           <LatestNote note={latestNote} />
         </>
       )}
 
-      <Spacing dir="y" amount={40} />
+      <Spacing dir="y" amount={48} />
 
       {Object.entries(notesByCategory).map(([category, notes]) => (
         <div key={category}>
           <CategoryHeader category={category} />
-          <Spacing dir="y" amount={24} />
+          <Spacing dir="y" />
           <NotesSection>
             <NoteList notes={notes} />
           </NotesSection>
-          <Spacing dir="y" amount={32} />
+          <Spacing dir="y" amount={40} />
         </div>
       ))}
     </>
