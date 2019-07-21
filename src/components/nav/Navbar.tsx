@@ -7,14 +7,21 @@ import { IconButton, Spacing } from '../common';
 import { useBottomSheet } from '../common/BottomSheet';
 import NewNoteForm from '../form/NewNoteForm';
 import { NoteBase } from '../notes/notes.types';
+import { useDebounce } from '../../utils/hooks';
 
 function Navbar() {
   const [searchVisible, setSearchVisibilty] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState('');
   const searchRef = React.useRef<any>();
   const notesModel = useModel('notes');
+  const searchModel = useModel('search');
   const bottomSheet = useBottomSheet();
   const allCategories = notesModel.select(notesModel.selectors.getCategories);
+  const searchTermDebounced = useDebounce(searchTerm, 500);
+
+  React.useEffect(() => {
+    searchModel.actions.setSearchTerm(searchTermDebounced);
+  }, [searchTermDebounced]);  // eslint-disable-line
 
   const saveNote = React.useCallback(
     (note: NoteBase) => {
@@ -28,6 +35,7 @@ function Navbar() {
     if (searchVisible) {
       setSearchTerm('');
       setSearchVisibilty(false);
+      searchModel.actions.setSearchTerm('');
     } else {
       bottomSheet.open(
         <NewNoteForm categories={allCategories} saveNote={saveNote} />
@@ -35,7 +43,7 @@ function Navbar() {
     }
   }
 
-  function focusSearch() {
+  function handleSearchClick() {
     if (searchRef.current) searchRef.current.focus();
     setSearchVisibilty(true);
   }
@@ -52,7 +60,7 @@ function Navbar() {
 
   return (
     <Wrapper>
-      <IconButton icon="search" onClick={focusSearch} />
+      <IconButton icon="search" onClick={handleSearchClick} />
 
       <SearchInput
         animate={searchVisible ? 'visible' : 'hidden'}

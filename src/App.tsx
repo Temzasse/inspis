@@ -3,23 +3,13 @@ import styled from 'styled-components';
 
 import { useModel } from './smook';
 import { useTestData } from './utils/hooks';
-import NoteList from './components/notes/NoteList';
-import LatestNote from './components/notes/LatestNote';
-import { Spacing, Heading } from './components/common';
-import CategoryHeader from './components/categories/CategoryHeader';
 import Navbar from './components/nav/Navbar';
+import Notes from './components/notes/Notes';
+import SearchResults from './components/search/SearchResults';
 
 function App() {
-  const notesModel = useModel('notes');
-  const { loadNotes } = notesModel.actions;
-  const latestNote = notesModel.select(notesModel.selectors.getLatestNote);
-  const notesByCategory = notesModel.select(
-    notesModel.selectors.getNotesByCategory
-  );
-
-  React.useEffect(() => {
-    loadNotes();
-  }, []); // eslint-disable-line
+  const searchModel = useModel('search');
+  const showSearchResults = !!searchModel.select('searchTerm');
 
   useTestData();
 
@@ -27,29 +17,7 @@ function App() {
     <AppWrapper>
       <AppContent>
         <Navbar />
-
-        <Main>
-          {latestNote && (
-            <>
-              <Heading>Latest</Heading>
-              <Spacing dir="y" amount={32} />
-              <LatestNote note={latestNote} />
-            </>
-          )}
-
-          <Spacing dir="y" amount={40} />
-
-          {Object.entries(notesByCategory).map(([category, notes]) => (
-            <div key={category}>
-              <CategoryHeader category={category} />
-              <Spacing dir="y" amount={24} />
-              <NotesSection>
-                <NoteList notes={notes} />
-              </NotesSection>
-              <Spacing dir="y" amount={32} />
-            </div>
-          ))}
-        </Main>
+        <Main>{showSearchResults ? <SearchResults /> : <Notes />}</Main>
       </AppContent>
     </AppWrapper>
   );
@@ -80,11 +48,6 @@ const Main = styled.main`
   padding-bottom: 32px;
   padding-left: 16px;
   padding-right: 16px;
-`;
-
-const NotesSection = styled.section`
-  margin-right: -16px;
-  margin-left: -16px;
 `;
 
 export default App;

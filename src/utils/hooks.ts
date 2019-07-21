@@ -15,6 +15,22 @@ export function usePrevious(value: any) {
   return ref.current;
 }
 
+export function useDebounce(value: any, delay: number) {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 export function useTestData() {
   const notesModel = useModel('notes');
   const allNotes = notesModel.select('notesById');
