@@ -14,30 +14,30 @@ interface Props {
 function CategoryHeader({ category }: Props) {
   const notesModel = useModel('notes');
   const allCategories = notesModel.select(notesModel.selectors.getCategories);
-  const closeSheetRef = React.useRef<() => any>();
+  const bottomSheet = useBottomSheet();
 
   const saveNote = React.useCallback(
     (note: NoteBase) => {
       notesModel.actions.saveNote(note);
-      setTimeout(() => {
-        if (closeSheetRef.current) closeSheetRef.current();
-      }, 500);
+      setTimeout(bottomSheet.close, 500);
     },
-    [notesModel.actions]
+    [bottomSheet, notesModel.actions]
   );
 
-  const { openBottomSheet, closeBottomSheet } = useBottomSheet(
-    <NewNoteForm categories={allCategories} saveNote={saveNote} />
-  );
-
-  React.useEffect(() => {
-    closeSheetRef.current = closeBottomSheet;
-  });
+  function openBottomSheet() {
+    bottomSheet.open(
+      <NewNoteForm
+        categories={allCategories}
+        initialCategory={category}
+        saveNote={saveNote}
+      />
+    );
+  }
 
   return (
     <Wrapper>
       <Heading variant="h2">{category}</Heading>
-      <IconButton icon="plus" onClick={() => openBottomSheet()} />
+      <IconButton icon="plus" onClick={openBottomSheet} />
     </Wrapper>
   );
 }

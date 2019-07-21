@@ -14,7 +14,7 @@ interface Props {
 function LatestNote({ note }: Props) {
   const bg = getNoteBG(note);
   return (
-    <Wrapper bg={bg}>
+    <Wrapper bg={bg} href={note.url} target="_blank" rel="noopener noreferrer">
       <NoteTitle note={note} size="lg" />
       <div style={{ flex: 1 }} />
       <NoteFooter>
@@ -24,7 +24,7 @@ function LatestNote({ note }: Props) {
   );
 }
 
-const Wrapper = styled('div')<{ bg: string }>`
+const Wrapper = styled('a')<{ bg: string }>`
   width: 100%;
   height: ${DIMENSIONS.width * (3 / 5)}px;
   border-radius: 22px;
@@ -33,6 +33,7 @@ const Wrapper = styled('div')<{ bg: string }>`
   text-shadow: 1px 0px 2px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
+  text-decoration: none;
 `;
 
 const NoteFooter = styled.div`

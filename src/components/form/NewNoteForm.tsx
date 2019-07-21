@@ -10,6 +10,7 @@ import { isValidUrl } from '../../utils/common';
 
 interface Props {
   categories: string[];
+  initialCategory?: string;
   saveNote: (note: NoteBase) => any;
 }
 
@@ -19,10 +20,10 @@ const parseTags = (tags: string) =>
     .filter(Boolean)
     .map(t => t.trim());
 
-function NewNoteForm({ categories, saveNote }: Props) {
+function NewNoteForm({ categories, initialCategory = '', saveNote }: Props) {
   const [url, setUrl] = React.useState('');
   const [title, setTitle] = React.useState('');
-  const [category, setCategory] = React.useState('');
+  const [category, setCategory] = React.useState(initialCategory);
   const [tagsStr, setTagsStr] = React.useState('');
   const [newCategory, setNewCategory] = React.useState<null | string>(null);
   const [error, setError] = React.useState<null | string>(null);

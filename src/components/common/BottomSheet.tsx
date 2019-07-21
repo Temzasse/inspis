@@ -11,12 +11,7 @@ interface State {
   el: null | React.ReactNode;
 }
 
-type Action =
-  | { type: 'open' }
-  | { type: 'close' }
-  | { type: 'set-el'; payload: React.ReactNode }
-  | { type: 'clear-el' };
-
+type Action = { type: 'open'; payload: React.ReactNode } | { type: 'close' };
 type Dispatch = (action: Action) => void;
 
 const StateContext = React.createContext<State | undefined>(undefined);
@@ -45,16 +40,10 @@ function useBottomSheetState() {
 function bottomSheetReducer(state: State, action: Action) {
   switch (action.type) {
     case 'open': {
-      return { ...state, isOpen: true };
+      return { ...state, isOpen: true, el: action.payload };
     }
     case 'close': {
-      return { ...state, isOpen: false };
-    }
-    case 'set-el': {
-      return { ...state, el: action.payload };
-    }
-    case 'clear-el': {
-      return { ...state, el: null };
+      return { ...state, isOpen: false, el: null };
     }
     default: {
       throw new Error(`Unhandled action type: ${action}`);
@@ -84,20 +73,13 @@ export function BottomSheetProvider({
   );
 }
 
-export function useBottomSheet(el: React.ReactNode) {
+export function useBottomSheet() {
   const dispatch = useBottomSheetDispatch();
-
-  React.useEffect(() => {
-    dispatch({ type: 'set-el', payload: el });
-    return () => {
-      dispatch({ type: 'clear-el' });
-    };
-  }, [dispatch, el]);
 
   return React.useMemo(
     () => ({
-      openBottomSheet: () => dispatch({ type: 'open' }),
-      closeBottomSheet: () => dispatch({ type: 'close' }),
+      open: (payload: React.ReactNode) => dispatch({ type: 'open', payload }),
+      close: () => dispatch({ type: 'close' }),
     }),
     [dispatch]
   );
