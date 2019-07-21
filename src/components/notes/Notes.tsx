@@ -30,7 +30,6 @@ function Notes() {
       {Object.entries(notesByCategory).map(([category, notes]) => (
         <div key={category}>
           <CategoryHeader category={category} />
-          <Spacing dir="y" />
           <NotesSection>
             <NoteList
               notes={notes}
