@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useModel } from '../../smook';
-import { IconButton, Heading } from '../common';
+import { IconButton, Heading, Spacing } from '../common';
 import { useBottomSheet } from '../common/BottomSheet';
 import NewNoteForm from '../form/NewNoteForm';
 import { NoteBase } from '../notes/notes.types';
@@ -37,6 +37,7 @@ function CategoryHeader({ category }: Props) {
   return (
     <Wrapper>
       <Heading variant="h2">{category}</Heading>
+      <div style={{ flex: 1 }} />
       <IconButton icon="plus" onClick={openBottomSheet} />
     </Wrapper>
   );
@@ -45,7 +46,6 @@ function CategoryHeader({ category }: Props) {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   margin-right: -8px;
 `;

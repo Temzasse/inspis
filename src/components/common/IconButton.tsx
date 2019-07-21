@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaPlus, FaSearch } from 'react-icons/fa';
+import { FaPlus, FaSearch, FaPen } from 'react-icons/fa';
 import { FiArrowLeft } from 'react-icons/fi';
 import { noop } from '../../utils/common';
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
-  icon: 'plus' | 'arrow-left' | 'search';
+  icon: 'plus' | 'arrow-left' | 'search' | 'edit';
   color?: string;
   onClick?: () => any;
 }
@@ -13,6 +13,7 @@ interface Props extends React.HTMLAttributes<HTMLButtonElement> {
 const iconMapper = {
   plus: FaPlus,
   search: FaSearch,
+  edit: FaPen,
   'arrow-left': FiArrowLeft,
 };
 

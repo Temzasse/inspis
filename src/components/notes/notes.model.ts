@@ -7,6 +7,7 @@ import { NotesById, Note, NoteBase, NotesByCategory } from './notes.types';
 
 export interface State {
   notesById: FetchableValue<NotesById>;
+  isEditing: boolean;
 }
 
 const notesModel = {
@@ -14,6 +15,7 @@ const notesModel = {
 
   state: {
     notesById: fetchable.value({}),
+    isEditing: false,
   },
 
   selectors: {
@@ -56,6 +58,11 @@ const notesModel = {
   },
 
   actions: {
+    setEditing: (state: State, action: Action<boolean>) => ({
+      ...state,
+      isEditing: action.payload,
+    }),
+
     setNotes: fetchable.reducer<State, 'notesById'>('notesById'),
 
     addNote: (state: State, action: Action<Note>) => ({
@@ -65,6 +72,19 @@ const notesModel = {
         data: { ...state.notesById.data, [action.payload.id]: action.payload },
       },
     }),
+
+    removeNote: (state: State, action: Action<Note>) => {
+      const { notesById: { data: notes } } = state;
+      const { [action.payload.id]: noteToRemove, ...remainingNotes } = notes;
+
+      return {
+        ...state,
+        notesById: {
+          ...state.notesById,
+          data: remainingNotes,
+        },
+      };
+    },
 
     loadNotes: effect(async models => {
       const notes = await storage.loadNotes();
@@ -89,6 +109,11 @@ const notesModel = {
 
       await storage.saveNote(note);
       models.notes.actions.addNote(note);
+    }),
+
+    deleteNote: effect(async (models, _, payload: Note) => {
+      await storage.removeNote(payload);
+      models.notes.actions.removeNote(payload);
     }),
   },
 };

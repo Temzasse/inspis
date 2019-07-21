@@ -9,6 +9,7 @@ import CategoryHeader from '../categories/CategoryHeader';
 
 function Notes() {
   const notesModel = useModel('notes');
+  const isEditingNotes = notesModel.select('isEditing');
   const latestNote = notesModel.select(notesModel.selectors.getLatestNote);
   const notesByCategory = notesModel.select(
     notesModel.selectors.getNotesByCategory
@@ -31,7 +32,11 @@ function Notes() {
           <CategoryHeader category={category} />
           <Spacing dir="y" />
           <NotesSection>
-            <NoteList notes={notes} />
+            <NoteList
+              notes={notes}
+              isEditing={isEditingNotes}
+              deleteNote={notesModel.actions.deleteNote}
+            />
           </NotesSection>
           <Spacing dir="y" amount={40} />
         </div>

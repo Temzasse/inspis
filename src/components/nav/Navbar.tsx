@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { FaStopCircle } from 'react-icons/fa';
 
 import { useModel } from '../../smook';
 import { IconButton, Spacing } from '../common';
@@ -18,10 +19,11 @@ function Navbar() {
   const bottomSheet = useBottomSheet();
   const allCategories = notesModel.select(notesModel.selectors.getCategories);
   const searchTermDebounced = useDebounce(searchTerm, 500);
+  const isEditingNotes = notesModel.select('isEditing');
 
   React.useEffect(() => {
     searchModel.actions.setSearchTerm(searchTermDebounced);
-  }, [searchTermDebounced]);  // eslint-disable-line
+  }, [searchTermDebounced]); // eslint-disable-line
 
   const saveNote = React.useCallback(
     (note: NoteBase) => {
@@ -58,6 +60,18 @@ function Navbar() {
     transition: 'transform 0.2s ease-in',
   };
 
+  if (isEditingNotes) {
+    return (
+      <Wrapper>
+        <StopEditing onClick={() => notesModel.actions.setEditing(false)}>
+          <FaStopCircle size={14} />
+          <Spacing amount={6} />
+          Stop editing
+        </StopEditing>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
       <IconButton icon="search" onClick={handleSearchClick} />
@@ -72,6 +86,17 @@ function Navbar() {
       />
 
       <Spacing amount={8} />
+
+      {!searchVisible && (
+        <>
+          <IconButton
+            icon="edit"
+            onClick={() => notesModel.actions.setEditing(true)}
+          />
+
+          <Spacing amount={4} />
+        </>
+      )}
 
       <IconButton icon="plus" onClick={handlePlusClick} style={plusStyles} />
     </Wrapper>
@@ -100,6 +125,14 @@ const SearchInput = styled(motion.input)`
   border: none;
   font-size: 16px;
   outline: none;
+`;
+
+const StopEditing = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
 `;
 
 export default Navbar;

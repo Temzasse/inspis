@@ -22,10 +22,22 @@ export const saveNote = async (note: Note) => {
     const currentNotes = await loadNotes();
     const notes = [...currentNotes, note];
     const data = JSON.stringify(notes);
-  
+
     await storage.setItem(NOTES_KEY, data);
   } catch (error) {
-    console.log('> Could not save note', error);
+    console.log('> Could not save note', note, error);
+  }
+};
+
+export const removeNote = async (note: Note) => {
+  try {
+    const currentNotes = await loadNotes();
+    const notes = currentNotes.filter(n => n.id !== note.id);
+    const data = JSON.stringify(notes);
+
+    await storage.setItem(NOTES_KEY, data);
+  } catch (error) {
+    console.log('> Could not remove note', note, error);
   }
 };
 

@@ -17,7 +17,12 @@ function NoteItem({ note }: Props) {
   const bg = getNoteBG(note);
 
   return (
-    <Wrapper bg={bg} href={note.url} target="_blank" rel="noopener noreferrer">
+    <Wrapper
+      bg={bg}
+      href={note.url}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <NoteTitle note={note} />
 
       <Spacing dir="y" amount={8} />
@@ -40,16 +45,11 @@ const Wrapper = styled('a')<{ bg: string }>`
   height: 200px;
   border-radius: 18px;
   background: ${props => props.bg};
-  margin-left: 16px;
   flex: none;
   padding: 12px 14px 14px 14px;
   display: flex;
   flex-direction: column;
   text-decoration: none;
-
-  &:first-child {
-    margin-left: 0px;
-  }
 `;
 
 const NoteFooter = styled.div`

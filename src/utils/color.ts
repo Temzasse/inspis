@@ -11,7 +11,7 @@ const randomColor = () => {
 };
 
 export const getNoteColors = (): [string, string] => {
-  const rot = 110 * (Math.random() > 0.5 ? 1 : -1);
+  const rot = randomNumBetween(100, 140) * (Math.random() > 0.5 ? 1 : -1);
   const c1 = randomColor();
   const c2 = color(c1)
     .rotate(rot)

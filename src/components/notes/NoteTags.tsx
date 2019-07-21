@@ -12,7 +12,9 @@ function NoteTags({ tags, size = 'sm' }: Props) {
   return (
     <Wrapper>
       {tags.map(tag => (
-        <NoteTag size={size}>{tag}</NoteTag>
+        <NoteTag size={size} key={tag}>
+          {tag}
+        </NoteTag>
       ))}
     </Wrapper>
   );
