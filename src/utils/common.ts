@@ -39,3 +39,10 @@ export const isValidUrl = (url: string) => {
     return false;
   }
 };
+
+export const isPWA = () => {
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    return true;
+  }
+  return false;
+};

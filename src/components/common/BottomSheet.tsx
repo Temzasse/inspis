@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { motion, useSpring, AnimatePresence } from 'framer-motion';
 import styled, { css, createGlobalStyle } from 'styled-components';
+
 import { usePrevious } from '../../utils/hooks';
+import { isPWA } from '../../utils/common';
 
 interface State {
   isOpen: boolean;
@@ -155,6 +157,14 @@ const BottomSheet = ({
   React.useEffect(() => {
     if (prevOpen && !isOpen) dispatch({ type: 'close' });
   }, [dispatch, isOpen, prevOpen]);
+
+  // Update body color to match backdrop color for PWAs
+  React.useEffect(() => {
+    if (isPWA()) {
+      const body = document.getElementsByTagName('body')[0];
+      body.style.backgroundColor = isOpen ? 'rgba(51, 51, 51, 0.5)' : '#fff';
+    }
+  }, [isOpen]);
 
   return (
     <React.Fragment>
