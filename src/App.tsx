@@ -8,6 +8,7 @@ import LatestNote from './components/notes/LatestNote';
 import { Spacing, Heading } from './components/common';
 import CategoryHeader from './components/categories/CategoryHeader';
 import { useTestData } from './utils/hooks';
+import Navbar from './components/nav/Navbar';
 
 function App() {
   const notesModel = useModel('notes');
@@ -26,7 +27,8 @@ function App() {
   return (
     <AppWrapper>
       <AppContent>
-        <Nav />
+        <Navbar />
+
         <Main>
           {latestNote && (
             <>
@@ -55,33 +57,30 @@ function App() {
 }
 
 const AppWrapper = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 100%;
   background-color: #f5f5f5;
 `;
 
 const AppContent = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  max-width: ${DIMENSIONS.width}px;
   background-color: #fff;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+
+  @media screen and (min-width: 768px) {
+    max-width: 480px;
+  }
 `;
 
 const Main = styled.main`
   flex: 1;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 32px 16px;
-`;
-
-const Nav = styled.nav`
-  height: 50px;
-  width: 100%;
-  border-bottom: 1px solid #eee;
+  padding-top: 92px;
+  padding-bottom: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
 `;
 
 const NotesSection = styled.section`

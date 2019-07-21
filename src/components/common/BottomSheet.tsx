@@ -238,6 +238,11 @@ const Sheet = styled(motion.div)`
   padding-bottom: 100px;
   height: calc(100vh + 100px);
   width: 100vw;
+
+  @media screen and (min-width: 768px) {
+    max-width: 480px;
+    left: calc(50% - 240px);
+  }
 `;
 
 export default BottomSheet;

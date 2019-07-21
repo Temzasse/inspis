@@ -1,18 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaSearch } from 'react-icons/fa';
 import { FiArrowLeft } from 'react-icons/fi';
 import { noop } from '../../utils/common';
 
 interface Props {
-  icon: 'plus' | 'arrow-left';
+  icon: 'plus' | 'arrow-left' | 'search';
   color?: string;
   onClick?: () => any;
 }
 
 const iconMapper = {
   plus: FaPlus,
-  'arrow-left': FiArrowLeft
+  search: FaSearch,
+  'arrow-left': FiArrowLeft,
 };
 
 function IconButton({ icon, color = '#222', onClick = noop }: Props) {
@@ -27,7 +28,12 @@ function IconButton({ icon, color = '#222', onClick = noop }: Props) {
 const Wrapper = styled.button`
   border: none;
   outline: none;
-  padding: 12px;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border-radius: 50%;
 
