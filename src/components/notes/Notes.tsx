@@ -14,10 +14,6 @@ function Notes() {
     notesModel.selectors.getNotesByCategory
   );
 
-  React.useEffect(() => {
-    notesModel.actions.loadNotes();
-  }, []); // eslint-disable-line
-
   return (
     <>
       {latestNote && (

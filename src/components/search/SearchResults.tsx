@@ -32,6 +32,8 @@ function SearchResults() {
           </Result>
         );
       })}
+
+      {searchResults.length === 0 && <NoResults>No results</NoResults>}
     </Wrapper>
   );
 }
@@ -66,6 +68,11 @@ const NoteContent = styled.div`
   align-items: center;
   color: #222;
   font-weight: 500;
+`;
+
+const NoResults = styled.p`
+  text-align: center;
+  margin: 0;
 `;
 
 export default SearchResults;

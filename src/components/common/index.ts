@@ -1,3 +1,4 @@
+export { default as EmptyState } from './EmptyState';
 export { default as Spacing } from './Spacing';
 export { default as IconButton } from './IconButton';
 export { default as TextInput } from './TextInput';

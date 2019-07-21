@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DIMENSIONS } from '../../constants';
 import { Note } from './notes.types';
 import { getNoteBG } from '../../utils/color';
 import NoteKindIcon from './NoteKindIcon';
@@ -26,7 +25,7 @@ function LatestNote({ note }: Props) {
 
 const Wrapper = styled('a')<{ bg: string }>`
   width: 100%;
-  height: ${DIMENSIONS.width * (3 / 5)}px;
+  height: 250px;
   border-radius: 22px;
   background: ${props => props.bg};
   padding: 14px 18px 18px 18px;

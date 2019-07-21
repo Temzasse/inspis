@@ -25,8 +25,10 @@ function NewNoteForm({ categories, initialCategory = '', saveNote }: Props) {
   const [title, setTitle] = React.useState('');
   const [category, setCategory] = React.useState(initialCategory);
   const [tagsStr, setTagsStr] = React.useState('');
-  const [newCategory, setNewCategory] = React.useState<null | string>(null);
   const [error, setError] = React.useState<null | string>(null);
+  const [newCategory, setNewCategory] = React.useState<null | string>(
+    categories.length > 0 ? null : ''
+  );
 
   function validateNote(note: NoteBase) {
     if (!note.title) return false;
@@ -69,12 +71,16 @@ function NewNoteForm({ categories, initialCategory = '', saveNote }: Props) {
             label="Category"
             required
           />
-          <Spacing dir="y" amount={8} />
-          <ClearNewCategory onTap={() => setNewCategory(null)}>
-            <FiArrowLeft />
-            <Spacing dir="x" amount={4} />
-            Select existing category
-          </ClearNewCategory>
+          {categories.length > 0 && (
+            <>
+              <Spacing dir="y" amount={8} />
+              <ClearNewCategory onTap={() => setNewCategory(null)}>
+                <FiArrowLeft />
+                <Spacing dir="x" amount={4} />
+                Select existing category
+              </ClearNewCategory>
+            </>
+          )}
         </>
       ) : (
         <Categories>

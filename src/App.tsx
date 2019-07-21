@@ -1,23 +1,43 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// import { useTestData } from './utils/hooks';
 import { useModel } from './smook';
-import { useTestData } from './utils/hooks';
+import { EmptyState } from './components/common';
 import Navbar from './components/nav/Navbar';
 import Notes from './components/notes/Notes';
 import SearchResults from './components/search/SearchResults';
 
 function App() {
   const searchModel = useModel('search');
+  const notesModel = useModel('notes');
   const showSearchResults = !!searchModel.select('searchTerm');
+  const notes = notesModel.select('notesById');
+  const hasNotes =
+    notes.status === 'SUCCESS' && Object.keys(notes.data).length > 0;
 
-  useTestData();
+  // useTestData();
+
+  React.useEffect(() => {
+    notesModel.actions.loadNotes();
+  }, []); // eslint-disable-line
+
+  // Wait until notes have been loaded
+  if (notes.status === 'INITIAL' || notes.status === 'LOADING') {
+    return null;
+  }
 
   return (
     <AppWrapper>
       <AppContent>
-        <Navbar />
-        <Main>{showSearchResults ? <SearchResults /> : <Notes />}</Main>
+        {hasNotes ? (
+          <>
+            <Navbar />
+            <Main>{showSearchResults ? <SearchResults /> : <Notes />}</Main>
+          </>
+        ) : (
+          <EmptyState />
+        )}
       </AppContent>
     </AppWrapper>
   );
@@ -44,10 +64,7 @@ const AppContent = styled.div`
 
 const Main = styled.main`
   flex: 1;
-  padding-top: 92px;
-  padding-bottom: 32px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 80px 16px;
 `;
 
 export default App;
