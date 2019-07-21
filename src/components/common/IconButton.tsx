@@ -4,7 +4,7 @@ import { FaPlus, FaSearch } from 'react-icons/fa';
 import { FiArrowLeft } from 'react-icons/fi';
 import { noop } from '../../utils/common';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLButtonElement> {
   icon: 'plus' | 'arrow-left' | 'search';
   color?: string;
   onClick?: () => any;
@@ -16,10 +16,10 @@ const iconMapper = {
   'arrow-left': FiArrowLeft,
 };
 
-function IconButton({ icon, color = '#222', onClick = noop }: Props) {
+function IconButton({ icon, color = '#222', onClick = noop, ...rest }: Props) {
   const Icon = iconMapper[icon];
   return (
-    <Wrapper onClick={onClick}>
+    <Wrapper onClick={onClick} {...rest}>
       <Icon size={16} color={color} />
     </Wrapper>
   );

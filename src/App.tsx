@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DIMENSIONS } from './constants';
-import NoteList from './components/notes/NoteList';
 import { useModel } from './smook';
+import { useTestData } from './utils/hooks';
+import NoteList from './components/notes/NoteList';
 import LatestNote from './components/notes/LatestNote';
 import { Spacing, Heading } from './components/common';
 import CategoryHeader from './components/categories/CategoryHeader';
-import { useTestData } from './utils/hooks';
 import Navbar from './components/nav/Navbar';
 
 function App() {
