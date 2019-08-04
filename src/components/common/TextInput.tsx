@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FiInfo } from 'react-icons/fi';
 import { FaAsterisk } from 'react-icons/fa';
+
 import Spacing from './Spacing';
 
 interface Props extends React.HTMLAttributes<HTMLInputElement> {

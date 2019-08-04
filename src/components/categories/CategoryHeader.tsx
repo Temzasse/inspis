@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useModel } from '../../smook';
-import { IconButton, Heading, Spacing } from '../common';
+import { IconButton, Heading } from '../common';
 import { useBottomSheet } from '../common/BottomSheet';
 import NewNoteForm from '../form/NewNoteForm';
 import { NoteBase } from '../notes/notes.types';

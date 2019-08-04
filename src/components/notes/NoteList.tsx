@@ -1,11 +1,11 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { Note } from './notes.types';
 import NoteItem from './NoteItem';
 import { randomNumBetween } from '../../utils/common';
-import { motion, AnimatePresence } from 'framer-motion';
 
 interface Props {
   notes: Note[];
@@ -39,7 +39,7 @@ function NoteList({ notes, isEditing, deleteNote }: Props) {
         ))}
       </AnimatePresence>
 
-      {notes.length > 3 && <Offset />}
+      {notes.length > 2 && <Offset />}
     </Wrapper>
   );
 }

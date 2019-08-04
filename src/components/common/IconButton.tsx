@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaPlus, FaSearch, FaPen } from 'react-icons/fa';
 import { FiArrowLeft } from 'react-icons/fi';
+
 import { noop } from '../../utils/common';
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
