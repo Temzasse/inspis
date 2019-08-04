@@ -74,7 +74,9 @@ const notesModel = {
     }),
 
     removeNote: (state: State, action: Action<Note>) => {
-      const { notesById: { data: notes } } = state;
+      const {
+        notesById: { data: notes },
+      } = state;
       const { [action.payload.id]: noteToRemove, ...remainingNotes } = notes;
 
       return {
@@ -114,6 +116,14 @@ const notesModel = {
     deleteNote: effect(async (models, _, payload: Note) => {
       await storage.removeNote(payload);
       models.notes.actions.removeNote(payload);
+
+      const noteCount =
+        Object.values(models.notes.select('notesById').data).length - 1;
+
+      // Automatically disable editing mode if all notes are deleted
+      if (noteCount === 0) {
+        models.notes.actions.setEditing(false);
+      }
     }),
   },
 };

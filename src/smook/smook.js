@@ -97,6 +97,14 @@ export const StoreProvider = ({ store, disableLogs, children }) => {
       modelsAcc[model.name] = {
         actions: modelActions,
         selectors: model.selectors,
+        select: fieldNameOrSelectorFn => {
+          const s = getState();
+          if (typeof fieldNameOrSelectorFn === 'string') {
+            return s[model.name][fieldNameOrSelectorFn];
+          } else {
+            return fieldNameOrSelectorFn(s);
+          }
+        },
       };
 
       return modelsAcc;
